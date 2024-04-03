@@ -15,7 +15,7 @@ interface CountriesTableProps {}
 const CountriesTable: React.FC<CountriesTableProps> = () => {
   const cls = classNameGenerator(styles);
 
-  const { isLoading, countriesList = [] } = useCountriesContext();
+  const { isLoading, countriesList = [], search } = useCountriesContext();
 
   const { postPerPage, totalPageNo, pageNo, setPageNo, list } = usePagination({
     data: countriesList,
@@ -35,7 +35,7 @@ const CountriesTable: React.FC<CountriesTableProps> = () => {
         header={countriesHeader}
         rows={countriesRows}
         isLoading={isLoading}
-        message="No result found"
+        message={search ? "No result found" : "Start searching"}
       />
       <Pagination
         postPerPage={postPerPage}

@@ -6,12 +6,14 @@ interface InitialState {
   isLoading: boolean;
   countriesList: { id: number; name: string; flag: string }[];
   getCountriesData: (countryName: string) => void;
-  restCountriesData: () => void;
+  resetCountriesData: () => void;
+  search: string;
 }
 
 const initialState: Partial<InitialState> = {
   isLoading: false,
   countriesList: [],
+  search: "",
 };
 
 const context = createContext(initialState);
@@ -26,17 +28,22 @@ const reducer = (
     case actions.GET_COUNTRIES_DATA_PENDING:
       return { ...state, isLoading: true };
     case actions.GET_COUNTRIES_DATA_FULFILLED: {
-      const countriesList = action?.payload?.map(({ name, flag }, index) => ({
-        id: index + 1,
-        name: name?.common || name?.official,
-        flag,
-      }));
-      return { ...state, isLoading: false, countriesList };
+      const countriesList = action?.payload?.data?.map(
+        ({ name, flag }, index) => ({
+          id: index + 1,
+          name: name?.common || name?.official,
+          flag,
+        })
+      );
+      const search = action?.payload?.search;
+      return { ...state, isLoading: false, countriesList, search };
     }
-    case actions.GET_COUNTRIES_DATA_REJECTED:
-      return { ...state, isLoading: false };
+    case actions.GET_COUNTRIES_DATA_REJECTED: {
+      const search = action?.payload?.search;
+      return { ...state, isLoading: false, countriesList: [], search };
+    }
     case actions.RESET_COUNTRIES_DATA:
-      return { ...state, countriesList: [] };
+      return { ...state, countriesList: [], search: "" };
 
     default:
       return state;
@@ -61,19 +68,33 @@ export const CountriesProvider: React.FC<CountriesProviderProps> = ({
     try {
       const response = await fetch(url);
       const data = await response.json();
-      dispatch({ type: actions.GET_COUNTRIES_DATA_FULFILLED, payload: data });
+      if (data?.status === 404) {
+        return dispatch({
+          type: actions.GET_COUNTRIES_DATA_REJECTED,
+          payload: { data: data?.message, search: countryName },
+        });
+      }
+      return dispatch({
+        type: actions.GET_COUNTRIES_DATA_FULFILLED,
+        payload: { data, search: countryName },
+      });
     } catch (error) {
-      dispatch({ type: actions.GET_COUNTRIES_DATA_REJECTED, payload: error });
+      return dispatch({
+        type: actions.GET_COUNTRIES_DATA_REJECTED,
+        payload: { data: error, search: countryName },
+      });
     }
   }, []);
 
-  const restCountriesData = useCallback(
+  const resetCountriesData = useCallback(
     () => dispatch({ type: actions.RESET_COUNTRIES_DATA }),
     []
   );
 
   return (
-    <context.Provider value={{ ...state, getCountriesData, restCountriesData }}>
+    <context.Provider
+      value={{ ...state, getCountriesData, resetCountriesData }}
+    >
       {children}
     </context.Provider>
   );
