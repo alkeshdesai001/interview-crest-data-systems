@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useCountriesContext } from "../../../reducers/CountriesReducer";
 
 import Table from "../../Molecules/Table";
 import Pagination from "../../Molecules/Pagination";
 
 import usePagination from "../../../hooks/usePagination";
+import useSorting from "../../../hooks/useSorting";
 
 import { classNameGenerator } from "../../../utils";
 
 import styles from "./CountriesTable.module.scss";
-import useSorting from "../../../hooks/useSorting";
 
 interface CountriesTableProps {}
 
@@ -19,19 +19,26 @@ const columnMap = {
   flag: "Flag",
 };
 
+type Country = {
+  id: number;
+  name: string;
+  flag: string;
+};
+
 const CountriesTable: React.FC<CountriesTableProps> = () => {
   const cls = classNameGenerator(styles);
 
   const { isLoading, countriesList = [], search } = useCountriesContext();
 
-  const { sortedList, onHeaderClick } = useSorting({
+  const { sortedList, onHeaderClick } = useSorting<Country, typeof columnMap>({
     data: countriesList,
     columnMap,
   });
 
-  const { postPerPage, totalPageNo, pageNo, setPageNo, list } = usePagination({
-    data: sortedList,
-  });
+  const { postPerPage, totalPageNo, pageNo, setPageNo, list } =
+    usePagination<Country>({
+      data: sortedList,
+    });
 
   const countriesHeader = useMemo(() => Object.values(columnMap), []);
 

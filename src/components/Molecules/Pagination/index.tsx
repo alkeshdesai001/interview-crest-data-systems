@@ -20,8 +20,8 @@ const Pagination: React.FC<PaginationProps> = ({
     return <></>;
   }
 
-  const handlePrevious = () => setPageNo((prevState) => prevState - 1);
-  const handleNext = () => setPageNo((prevState) => prevState + 1);
+  const handlePrevious = () => setPageNo(pageNo - 1);
+  const handleNext = () => setPageNo(pageNo + 1);
 
   return (
     <div className={cls("pagination")}>

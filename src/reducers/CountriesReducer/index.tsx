@@ -16,9 +16,14 @@ const initialState: Partial<InitialState> = {
   search: "",
 };
 
-const context = createContext(initialState);
+const context = createContext<InitialState>(initialState as InitialState);
 
 export const useCountriesContext = () => useContext(context);
+
+interface Response {
+  name: { common: string; official: string };
+  flag: string;
+}
 
 const reducer = (
   state: InitialState,
@@ -29,7 +34,7 @@ const reducer = (
       return { ...state, isLoading: true };
     case actions.GET_COUNTRIES_DATA_FULFILLED: {
       const countriesList = action?.payload?.data?.map(
-        ({ name, flag }, index) => ({
+        ({ name, flag }: Response, index: number) => ({
           id: index + 1,
           name: name?.common || name?.official,
           flag,
@@ -57,11 +62,12 @@ interface CountriesProviderProps {
 export const CountriesProvider: React.FC<CountriesProviderProps> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState as InitialState);
 
   const getCountriesData = useCallback(async (countryName: string) => {
     dispatch({ type: actions.GET_COUNTRIES_DATA_PENDING });
     const url = `${
+      //@ts-ignore
       import.meta.env.VITE_COUNTRIES_BASE_API
     }/name/${countryName}`;
 

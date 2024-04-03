@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-const useSorting = ({ data, columnMap }) => {
+interface SortingData<T, U> {
+  data: T[];
+  columnMap: U;
+}
+
+const useSorting = <T, U>({ data, columnMap }: SortingData<T, U>) => {
   const [sorting, setSorting] = useState({ column: 0, order: 1 });
   const [sortedList, setSortedList] = useState(data);
 
@@ -10,10 +15,13 @@ const useSorting = ({ data, columnMap }) => {
     } else {
       let _sortedList = [];
       if (sorting.column === 0) {
+        // @ts-ignore
         _sortedList = [...data].sort((a, b) => (a.id - b.id) * sorting.order);
       } else {
+        // @ts-ignore
         const key = Object.keys(columnMap)[sorting.column];
         _sortedList = [...data].sort(
+          // @ts-ignore
           (a, b) => (a[key] > b[key] ? -1 : 1) * sorting.order
         );
       }

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 
-const usePagination = ({ data }: { data: any[] }) => {
+interface PaginationData<T> {
+  data: T[];
+}
+
+const usePagination = <T,>({ data }: PaginationData<T>) => {
   const postPerPage = 10;
   const [totalPageNo, setTotalPageNo] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   // const [postPerPage, setPostPerPage] = useState(10);
 
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<T[]>([]);
 
   useEffect(() => {
     setPageNo(1);

@@ -16,14 +16,14 @@ const CountriesSearchInput: React.FC<CountriesSearchInputProps> = () => {
   const { getCountriesData, resetCountriesData } = useCountriesContext();
 
   const handleCountriesData = useCallback(
-    (countryName) => {
+    (countryName: string) => {
       if (countryName) {
         getCountriesData(countryName);
       } else {
         resetCountriesData();
       }
     },
-    [getCountriesData]
+    [getCountriesData, resetCountriesData]
   );
 
   return (
