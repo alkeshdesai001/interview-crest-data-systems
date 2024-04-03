@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCountriesContext } from "../../../reducers/CountriesReducer";
 
 import Table from "../../Molecules/Table";
@@ -9,25 +9,35 @@ import usePagination from "../../../hooks/usePagination";
 import { classNameGenerator } from "../../../utils";
 
 import styles from "./CountriesTable.module.scss";
+import useSorting from "../../../hooks/useSorting";
 
 interface CountriesTableProps {}
+
+const columnMap = {
+  id: "ID",
+  name: "Name",
+  flag: "Flag",
+};
 
 const CountriesTable: React.FC<CountriesTableProps> = () => {
   const cls = classNameGenerator(styles);
 
   const { isLoading, countriesList = [], search } = useCountriesContext();
 
-  const { postPerPage, totalPageNo, pageNo, setPageNo, list } = usePagination({
+  const { sortedList, onHeaderClick } = useSorting({
     data: countriesList,
+    columnMap,
   });
 
-  const countriesHeader = useMemo(() => ["ID", "Name", "Flag"], []);
+  const { postPerPage, totalPageNo, pageNo, setPageNo, list } = usePagination({
+    data: sortedList,
+  });
+
+  const countriesHeader = useMemo(() => Object.values(columnMap), []);
 
   const countriesRows = useMemo(() => {
     return list?.map(({ id, name, flag }) => [id, name, flag]) || [];
   }, [list]);
-
-  console.log("[log-countriesList]", countriesList);
 
   return (
     <div className={cls("countriesTable")}>
@@ -36,6 +46,7 @@ const CountriesTable: React.FC<CountriesTableProps> = () => {
         rows={countriesRows}
         isLoading={isLoading}
         message={search ? "No result found" : "Start searching"}
+        onHeaderClick={onHeaderClick}
       />
       <Pagination
         postPerPage={postPerPage}

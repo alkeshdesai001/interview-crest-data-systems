@@ -9,15 +9,22 @@ interface TableProps {
   message?: string;
   header: string[];
   rows: (string | number)[][] | [];
+  onHeaderClick: (id: number) => void;
 }
 
-const Table: React.FC<TableProps> = ({ isLoading, message, header, rows }) => {
+const Table: React.FC<TableProps> = ({
+  isLoading,
+  message,
+  header,
+  rows,
+  onHeaderClick,
+}) => {
   const cls = classNameGenerator(styles);
 
   return (
     <table className={cls("table")}>
       <thead>
-        <TableHeader header={header} />
+        <TableHeader header={header} onHeaderClick={onHeaderClick} />
       </thead>
       <tbody>
         {rows.length ? (

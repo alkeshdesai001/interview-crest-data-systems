@@ -9,6 +9,7 @@ const usePagination = ({ data }: { data: any[] }) => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
+    setPageNo(1);
     setTotalPageNo(Math.ceil(data.length / postPerPage));
   }, [data]);
 
