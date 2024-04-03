@@ -13,7 +13,6 @@ const HomePage: React.FC<HomePageProps> = () => {
     <section className={cls("homePage")}>
       <div className={cls("container")}>
         <CountriesSearchInput />
-        <h1>HomePage</h1>
       </div>
     </section>
   );

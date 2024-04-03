@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
+
+import SearchInput from "../../Molecules/SearchInput";
 
 import { useCountriesContext } from "../../../reducers/CountriesReducer";
 
@@ -11,15 +13,20 @@ interface CountriesSearchInputProps {}
 const CountriesSearchInput: React.FC<CountriesSearchInputProps> = () => {
   const cls = classNameGenerator(styles);
 
-  const { isLoading, getCountriesData } = useCountriesContext();
+  const { getCountriesData } = useCountriesContext();
 
-  console.log("[log-isLoading]", isLoading);
+  const handleCountriesData = useCallback(
+    (countryName) => {
+      getCountriesData(countryName);
+    },
+    [getCountriesData]
+  );
 
-  useEffect(() => {
-    getCountriesData("india");
-  }, [getCountriesData]);
-
-  return <div className={cls("countriesSearchInput")}></div>;
+  return (
+    <div className={cls("countriesSearchInput")}>
+      <SearchInput callback={handleCountriesData} />
+    </div>
+  );
 };
 
 export default CountriesSearchInput;

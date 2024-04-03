@@ -47,11 +47,10 @@ export const CountriesProvider: React.FC<CountriesProviderProps> = ({
       import.meta.env.VITE_COUNTRIES_BASE_API
     }/name/${countryName}`;
 
-    console.log("[log-url]", url);
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log("[log-data]", data);
+      // console.log("[log-data]", data);
       dispatch({ type: actions.GET_COUNTRIES_DATA_FULFILLED, payload: data });
     } catch (error) {
       dispatch({ type: actions.GET_COUNTRIES_DATA_REJECTED, payload: error });
