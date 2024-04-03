@@ -1,4 +1,8 @@
 .tableRow {
+  .message {
+    text-align: center !important;
+    padding: 16px !important;
+  }
   &:nth-child(odd) {
     td {
       background-color: #e1e1e1;

@@ -5,11 +5,13 @@ import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 
 interface TableProps {
+  isLoading?: boolean;
+  message?: string;
   header: string[];
   rows: (string | number)[][] | [];
 }
 
-const Table: React.FC<TableProps> = ({ header, rows }) => {
+const Table: React.FC<TableProps> = ({ isLoading, message, header, rows }) => {
   const cls = classNameGenerator(styles);
 
   return (
@@ -18,9 +20,15 @@ const Table: React.FC<TableProps> = ({ header, rows }) => {
         <TableHeader header={header} />
       </thead>
       <tbody>
-        {rows?.map((row, index) => (
-          <TableRow key={index} row={row} />
-        ))}
+        {rows.length ? (
+          rows?.map((row, index) => <TableRow key={index} row={row} />)
+        ) : (
+          <TableRow
+            colSpan={header?.length}
+            isLoading={isLoading}
+            message={message}
+          />
+        )}
       </tbody>
     </table>
   );
