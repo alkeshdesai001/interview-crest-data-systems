@@ -1,0 +1,15 @@
+@import "../../../styles/mixins";
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--accent-background-color);
+  padding: 16px;
+  .container {
+    .logo {
+      width: 100px;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+}

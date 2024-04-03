@@ -1,5 +1,4 @@
-import MainTemplate from "../../components/Templates/MainTemplate";
-import HomePageContainer from "../../containers/HomePage";
+import CountriesSearchInput from "../../components/Organisms/CountriesSearchInput";
 
 import { classNameGenerator } from "../../utils";
 
@@ -11,11 +10,12 @@ const HomePage: React.FC<HomePageProps> = () => {
   const cls = classNameGenerator(styles);
 
   return (
-    <MainTemplate>
-      <div className={cls("homePage")}>
-        <HomePageContainer />
+    <section className={cls("homePage")}>
+      <div className={cls("container")}>
+        <CountriesSearchInput />
+        <h1>HomePage</h1>
       </div>
-    </MainTemplate>
+    </section>
   );
 };
 
