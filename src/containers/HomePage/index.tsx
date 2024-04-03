@@ -1,4 +1,5 @@
 import CountriesSearchInput from "../../components/Organisms/CountriesSearchInput";
+import CountriesTable from "../../components/Organisms/CountriesTable";
 
 import { classNameGenerator } from "../../utils";
 
@@ -13,6 +14,7 @@ const HomePage: React.FC<HomePageProps> = () => {
     <section className={cls("homePage")}>
       <div className={cls("container")}>
         <CountriesSearchInput />
+        <CountriesTable />
       </div>
     </section>
   );

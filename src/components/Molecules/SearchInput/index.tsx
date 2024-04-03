@@ -20,7 +20,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ callback }) => {
 
   useSearchFocus(inputRef);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("in");
 
   const debouncedSearch = useDebouncedSearch(search, 300);
 

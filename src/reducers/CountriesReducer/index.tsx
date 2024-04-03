@@ -4,11 +4,13 @@ import * as actions from "./actions";
 
 interface InitialState {
   isLoading: boolean;
+  countriesList: { id: number; name: string; flag: string }[];
   getCountriesData: (countryName: string) => void;
 }
 
 const initialState: Partial<InitialState> = {
   isLoading: false,
+  countriesList: [],
 };
 
 const context = createContext(initialState);
@@ -22,8 +24,15 @@ const reducer = (
   switch (action.type) {
     case actions.GET_COUNTRIES_DATA_PENDING:
       return { ...state, isLoading: true };
-    case actions.GET_COUNTRIES_DATA_FULFILLED:
-      return { ...state, isLoading: false };
+    case actions.GET_COUNTRIES_DATA_FULFILLED: {
+      const countriesList = action?.payload?.map(({ name, flag }, index) => ({
+        id: index + 1,
+        name: name?.common || name?.official,
+        flag,
+      }));
+      return { ...state, isLoading: false, countriesList };
+    }
+
     case actions.GET_COUNTRIES_DATA_REJECTED:
       return { ...state, isLoading: false };
 
@@ -50,7 +59,6 @@ export const CountriesProvider: React.FC<CountriesProviderProps> = ({
     try {
       const response = await fetch(url);
       const data = await response.json();
-      // console.log("[log-data]", data);
       dispatch({ type: actions.GET_COUNTRIES_DATA_FULFILLED, payload: data });
     } catch (error) {
       dispatch({ type: actions.GET_COUNTRIES_DATA_REJECTED, payload: error });
