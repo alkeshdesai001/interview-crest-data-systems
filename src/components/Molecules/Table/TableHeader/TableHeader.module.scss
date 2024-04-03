@@ -1,3 +1,6 @@
 .tableHeader {
-  
+  th {
+    color: var(--accent-text-color);
+    background-color: var(--accent-background-color);
+  }
 }

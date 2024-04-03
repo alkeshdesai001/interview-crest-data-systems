@@ -13,11 +13,15 @@ interface CountriesSearchInputProps {}
 const CountriesSearchInput: React.FC<CountriesSearchInputProps> = () => {
   const cls = classNameGenerator(styles);
 
-  const { getCountriesData } = useCountriesContext();
+  const { getCountriesData, restCountriesData } = useCountriesContext();
 
   const handleCountriesData = useCallback(
     (countryName) => {
-      getCountriesData(countryName);
+      if (countryName) {
+        getCountriesData(countryName);
+      } else {
+        restCountriesData();
+      }
     },
     [getCountriesData]
   );

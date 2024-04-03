@@ -1,3 +1,18 @@
+@import "../../../styles/mixins";
+
 .pagination {
-  margin-top: 24px;
+  @include flex-center;
+  gap: 16px;
+  button {
+    cursor: pointer;
+    color: var(--accent-text-color);
+    background-color: var(--accent-background-color);
+    border: none;
+    padding: 10px;
+    border-radius: 32px;
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #ccc;
+    }
+  }
 }

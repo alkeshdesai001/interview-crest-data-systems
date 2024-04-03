@@ -26,11 +26,13 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className={cls("pagination")}>
       <button onClick={handlePrevious} disabled={pageNo === 1}>
-        Prev
+        &larr;
       </button>
-      {pageNo} out of {totalPageNo}
+      <p>
+        {pageNo} out of {totalPageNo}
+      </p>
       <button onClick={handleNext} disabled={pageNo === totalPageNo}>
-        Next
+        &rarr;
       </button>
     </div>
   );

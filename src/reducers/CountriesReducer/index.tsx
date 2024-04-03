@@ -6,6 +6,7 @@ interface InitialState {
   isLoading: boolean;
   countriesList: { id: number; name: string; flag: string }[];
   getCountriesData: (countryName: string) => void;
+  restCountriesData: () => void;
 }
 
 const initialState: Partial<InitialState> = {
@@ -32,9 +33,10 @@ const reducer = (
       }));
       return { ...state, isLoading: false, countriesList };
     }
-
     case actions.GET_COUNTRIES_DATA_REJECTED:
       return { ...state, isLoading: false };
+    case actions.RESET_COUNTRIES_DATA:
+      return { ...state, countriesList: [] };
 
     default:
       return state;
@@ -65,8 +67,13 @@ export const CountriesProvider: React.FC<CountriesProviderProps> = ({
     }
   }, []);
 
+  const restCountriesData = useCallback(
+    () => dispatch({ type: actions.RESET_COUNTRIES_DATA }),
+    []
+  );
+
   return (
-    <context.Provider value={{ ...state, getCountriesData }}>
+    <context.Provider value={{ ...state, getCountriesData, restCountriesData }}>
       {children}
     </context.Provider>
   );

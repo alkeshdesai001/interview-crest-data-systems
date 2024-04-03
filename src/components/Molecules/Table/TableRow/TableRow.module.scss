@@ -1,2 +1,12 @@
 .tableRow {
+  &:nth-child(odd) {
+    td {
+      background-color: #e1e1e1;
+    }
+  }
+  &:nth-child(even) {
+    td {
+      background-color: #c1c1c1;
+    }
+  }
 }
